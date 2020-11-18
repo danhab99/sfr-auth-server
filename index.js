@@ -41,8 +41,17 @@ app.get('/', (req, res) => {
   Site.find({}).then(sites => {
     res.render('index', {
       user: req.user,
-      mysite: sites.find(x => x.owner.toString() == req.user ?? req.user._id.toString()) || {},
       sites,
+      domain: process.env.DOMAIN
+    })
+  })
+})
+
+app.get('/edit', (req, res) => {
+  Site.findOne({owner: req.user._id}).then(mysite => {
+    res.render('edit', {
+      user: req.user,
+      mysite,
       domain: process.env.DOMAIN
     })
   })
@@ -63,7 +72,7 @@ mongoose.connection.on("close", () => {
 
 mongoose.connection.on("open", () => {
   console.log("Mongo database open")
-  app.listen(3001, () => console.log('Listening on port 3001'))
+  app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}`))
 });
 
 mongoose.connect(process.env.MONGO_SRV,
