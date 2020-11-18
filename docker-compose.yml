@@ -1,7 +1,7 @@
 version: "2"
 services:
   sfroa:
-    container_name: Scroll For Ruqqus Auth Server
+    container_name: sfroa
     restart: always
     build:
       context: ./
