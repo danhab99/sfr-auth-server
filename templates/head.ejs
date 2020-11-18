@@ -101,10 +101,11 @@
       <div style="display: flex; flex-direction: row; justify-content: flex-end;">
         <% if (user) { %>
           <a href="/logout">Logout of <%= user.email %></a>
+          <a href="/edit">Edit my app</a>
         <% } else { %>
           <a href="/login">Login</a>
+          <a href="/register">Register</a>
         <% } %>
-        <a href="/register">Register</a>
       </div>
       <h1>Scroll-For-Ruqqus Auth Server</h1>
     </header>
