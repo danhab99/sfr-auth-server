@@ -36,6 +36,9 @@ app.set('view engine', 'ejs');
 app.use(require('./route/login'))
 app.use('/auth', require('./route/oauth'))
 app.use('/sites', require('./route/sites'))
+app.use('/faq', (req, res) => res.render('faq', {
+  user: req.user
+}))
 
 app.get('/', (req, res) => {
   Site.find({}).then(sites => {
