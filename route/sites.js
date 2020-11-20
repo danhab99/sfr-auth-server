@@ -8,7 +8,7 @@ const route = express.Router()
 
 route.get('/', (req, res) => {
   console.log('Sending sites list')
-  Site.find({}).select(['domain', 'name']).then(list => res.json(list))
+  Site.find({}).select(['domain', 'name', 'clientID']).then(list => res.json(list))
 })
 
 route.post('/new', requireLogin, bodyParser.urlencoded(), (req, res) => {

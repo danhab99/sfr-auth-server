@@ -5,11 +5,13 @@
 <table>
   <tr>
     <th>Domain</th>
+    <th>Client ID</th>
     <th>Redirect URL</th>
   </tr>
   <% for (let site of sites) { %>
     <tr>
       <td><a href="https://<%= site.domain %>"><%= site.name %></a></td>
+      <td><p><%= site.clientID %></p></td>
       <td><a href="https://<%= domain %>/auth/<%= site._id %>/callback">https://<%= domain %>/auth/<%= site._id %>/callback</a></td>
     </tr>
   <% } %>
