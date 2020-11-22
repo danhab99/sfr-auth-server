@@ -45,9 +45,9 @@ const doFetch = (body) => (req, res) => {
 route.get('/:id', 
   mountSite, 
   (req, res) => {
-    let url = new URL(`https://${site.domain}/oauth/authorize`)
-    url.searchParams.append('client_id', site.clientID)
-    url.searchParams.append('client_secret', site.clientSecret)
+    let url = new URL(`https://${req.site.domain}/oauth/authorize`)
+    url.searchParams.append('client_id', req.site.clientID)
+    url.searchParams.append('client_secret', req.site.clientSecret)
     url.searchParams.append('redirect_uri', `https://${process.env.DOMAIN}/auth/${req.params.id}/callback`)
     url.searchParams.append('scope', "identity,create,read,update,delete,vote,guildmaster")
     url.searchParams.append('permanent', 'true')
