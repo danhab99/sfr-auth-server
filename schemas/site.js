@@ -1,32 +1,32 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const siteSchema = new mongoose.Schema({
   clientID: {
     type: String,
-    required: true
+    required: true,
   },
   clientSecret: {
     type: String,
-    required: true
+    required: true,
   },
   domain: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   name: {
     type: String,
-    required: true
+    required: true,
   },
   redriect: {
     type: String,
-    required: true
+    required: true,
   },
   owner: {
     type: mongoose.SchemaTypes.ObjectId,
-    ref: 'users',
-    unique: true
-  }
-})
+    ref: "users",
+    unique: true,
+  },
+});
 
-module.exports = Site = mongoose.model('site', siteSchema)
+module.exports = Site = mongoose.model("site", siteSchema);
