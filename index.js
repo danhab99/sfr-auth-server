@@ -37,12 +37,13 @@ app.use(
 app.use((req, res, next) => {
   req["log"] = (log, ...args) => {
     console.log(
-      `${req.socket.remoteAddress} | ${new Date().toString()} | ${req.method} ${
-        req.path
-      } | ${log}`,
+      `${
+        req.headers["X-Real-IP"] || req.socket.remoteAddress
+      } | ${new Date().toString()} | ${req.method} ${req.path} | ${log}`,
       ...args
     );
   };
+  next();
 });
 
 app.set("views", path.join(__dirname, "views"));
