@@ -92,7 +92,7 @@ mongoose.connection.on("close", () => {
 
 mongoose.connection.on("open", () => {
   console.log("Mongo database open");
-  app.listen(process.env.PORT, () =>
+  app.listen(process.env.PORT, "0.0.0.0", () =>
     console.log(`Listening on port ${process.env.PORT}`)
   );
 });
