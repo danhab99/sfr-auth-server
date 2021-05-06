@@ -8,6 +8,7 @@ const bodyParser = require("body-parser");
 const route = express.Router();
 
 const mountSite = (req, res, next) => {
+  req.log("Mounting site");
   Site.findById(req.params.id).exec((err, site) => {
     if (err || !site) {
       res.status(404).json({ err: "Site does not exist" });
@@ -19,6 +20,7 @@ const mountSite = (req, res, next) => {
 };
 
 const doFetch = (body) => (req, res) => {
+  req.log("Fetching tokens from", req.site.domain);
   let f = fetch(`https://${req.site.domain}/oauth/grant`, {
     method: "POST",
     body: body(req),
@@ -36,8 +38,10 @@ const doFetch = (body) => (req, res) => {
       j["oauth_error"] &&
       j["oauth_error"] === "Invalid `client_id` or `client_secret`"
     ) {
+      req.log("Domain rejected tokens", j, req.site);
       Site.findOneAndDelete({ _id: site._id }).exec();
     }
+    req.log("Sending results");
     res.json(j);
   });
 
@@ -59,26 +63,28 @@ route.get("/:id", mountSite, (req, res) => {
   url.searchParams.append("permanent", "true");
   url.searchParams.append("state", req.query.state);
 
+  req.log("Redirecting user to", req.site);
+
   res.redirect(url.toString());
 });
 
 route.get(
   "/:id/callback",
   mountSite,
-  doFetch(
-    (req) =>
-      `code=${req.query.code}&client_id=${req.site.clientID}&client_secret=${req.site.clientSecret}&grant_type=code`
-  )
+  doFetch((req) => {
+    req.log("Submitting token");
+    return `code=${req.query.code}&client_id=${req.site.clientID}&client_secret=${req.site.clientSecret}&grant_type=code`;
+  })
 );
 
 route.post(
   "/:id/refresh",
   mountSite,
   bodyParser.urlencoded({ extended: true }),
-  doFetch(
-    (req) =>
-      `refresh_token=${req.body.refresh_token}&client_id=${req.site.clientID}&client_secret=${req.site.clientSecret}&grant_type=refresh`
-  )
+  doFetch((req) => {
+    req.log("Refreshing tokens");
+    return `refresh_token=${req.body.refresh_token}&client_id=${req.site.clientID}&client_secret=${req.site.clientSecret}&grant_type=refresh`;
+  })
 );
 
 module.exports = route;

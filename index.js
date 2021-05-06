@@ -34,8 +34,16 @@ app.use(
   })
 );
 
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.use((req, res, next) => {
+  req["log"] = (log, ...args) => {
+    console.log(
+      `${req.socket.remoteAddress} | ${new Date().toString()} | ${req.method} ${
+        req.path
+      } | ${log}`,
+      ...args
+    );
+  };
+});
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");

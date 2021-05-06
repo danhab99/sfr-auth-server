@@ -7,14 +7,14 @@ const requireLogin = require("../requireLogin");
 const route = express.Router();
 
 route.get("/", (req, res) => {
-  console.log("Sending sites list");
+  req.log("Sending sites list");
   Site.find({})
     .select(["domain", "name", "clientID"])
     .then((list) => res.json(list));
 });
 
 route.post("/new", requireLogin, bodyParser.urlencoded(), (req, res) => {
-  console.log("Editing document");
+  req.log("Editing document");
   Site.findOneAndUpdate({ owner: req.user._id }, req.body, {
     new: true,
     upsert: true,
@@ -24,6 +24,7 @@ route.post("/new", requireLogin, bodyParser.urlencoded(), (req, res) => {
 });
 
 route.get("/delete", requireLogin, (req, res) => {
+  req.log("Deleting site");
   Site.remove({ owner: req.user._id }).exec((err, idk) => {
     res.redirect("/");
   });

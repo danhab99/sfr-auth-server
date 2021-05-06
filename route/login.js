@@ -80,13 +80,13 @@ route.use("/logout", requireLogin, (req, res) => {
 route.post("/register", bodyParser.urlencoded(), (req, res) => {
   User.findOne({ email: req.body.email }).then((user) => {
     if (user) {
-      console.log("User already taken");
+      req.log("User already taken");
       res.render("register", {
         user: null,
         error: "Email already taken",
       });
     } else {
-      console.log("Registering new user");
+      req.log("Registering new user");
       User.create({ email: req.body.email }).then((newUser) => {
         newUser.setPassword(req.body.password).then(() => {
           req.logIn(newUser, () => {
