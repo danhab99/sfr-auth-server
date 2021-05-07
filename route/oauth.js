@@ -51,7 +51,6 @@ const doFetch = (body) => (req, res) => {
 route.get("/:id", mountSite, (req, res) => {
   let url = new URL(`https://${req.site.domain}/oauth/authorize`);
   url.searchParams.append("client_id", req.site.clientID);
-  url.searchParams.append("client_secret", req.site.clientSecret);
   url.searchParams.append(
     "redirect_uri",
     `https://${process.env.DOMAIN}/auth/${req.params.id}/callback`
@@ -73,7 +72,7 @@ route.get(
   mountSite,
   doFetch((req) => {
     req.log("Submitting token");
-    return `code=${req.query.code}&client_id=${req.site.clientID}&client_secret=${req.site.clientSecret}&grant_type=code`;
+    return `code=${req.query.code}&client_id=${req.site.clientID}&grant_type=code`;
   })
 );
 
@@ -83,7 +82,7 @@ route.post(
   bodyParser.urlencoded({ extended: true }),
   doFetch((req) => {
     req.log("Refreshing tokens");
-    return `refresh_token=${req.body.refresh_token}&client_id=${req.site.clientID}&client_secret=${req.site.clientSecret}&grant_type=refresh`;
+    return `refresh_token=${req.body.refresh_token}&client_id=${req.site.clientID}&grant_type=refresh`;
   })
 );
 
