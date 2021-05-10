@@ -39,7 +39,7 @@ const doFetch = (body) => (req, res) => {
       j["oauth_error"] === "Invalid `client_id` or `client_secret`"
     ) {
       req.log("Domain rejected tokens", j, req.site);
-      Site.findOneAndDelete({ _id: site._id }).exec();
+      Site.findOneAndDelete({ _id: req.site._id }).exec();
     }
     req.log("Sending results");
     res.json(j);
