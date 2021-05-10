@@ -72,7 +72,7 @@ route.get(
   mountSite,
   doFetch((req) => {
     req.log("Submitting token");
-    return `code=${req.query.code}&client_id=${req.site.clientID}&grant_type=code`;
+    return `code=${req.query.code}&client_id=${req.site.clientID}&client_secret=${req.site.clientSecret}&grant_type=code`;
   })
 );
 
@@ -82,7 +82,7 @@ route.post(
   bodyParser.urlencoded({ extended: true }),
   doFetch((req) => {
     req.log("Refreshing tokens");
-    return `refresh_token=${req.body.refresh_token}&client_id=${req.site.clientID}&grant_type=refresh`;
+    return `refresh_token=${req.body.refresh_token}&client_id=${req.site.clientID}&client_secret=${req.site.clientSecret}&grant_type=refresh`;
   })
 );
 
